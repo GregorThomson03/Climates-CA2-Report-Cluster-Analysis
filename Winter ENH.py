@@ -11,7 +11,7 @@ Created on Tue Nov 25 16:42:56 2025
 """
 Created on Thu Nov 20 13:59:51 2025
 
-@author: andrewmilne
+@author: ******
 """
 
 import netCDF4 as nc  # extracting the data
@@ -25,13 +25,13 @@ import cartopy.feature as cfeature  # mapping the clusters
 from sklearn.cluster import KMeans # calcualte k-means
 
 
-# Set working directory 
+# Set working directory
 cwd = '/********/CA2/Data'
 
 # Load datasets
-data_v10 = nc.Dataset('/Users/andrewmilne/Desktop/GeoScience/Masters/Climatology/Assesments/CA2/Data/v10.nc', 'r')
-data_u10 = nc.Dataset('/Users/andrewmilne/Desktop/GeoScience/Masters/Climatology/Assesments/CA2/Data/u10.nc', 'r')
-data_t2m = nc.Dataset('/Users/andrewmilne/Desktop/GeoScience/Masters/Climatology/Assesments/CA2/Data/t2m.nc', 'r')
+data_v10 = nc.Dataset('/Users/*****/Desktop/GeoScience/Masters/Climatology/Assesments/CA2/Data/v10.nc', 'r')
+data_u10 = nc.Dataset('/Users/*****/Desktop/GeoScience/Masters/Climatology/Assesments/CA2/Data/u10.nc', 'r')
+data_t2m = nc.Dataset('/Users/*****/Desktop/GeoScience/Masters/Climatology/Assesments/CA2/Data/t2m.nc', 'r')
 
 # Extract lat/lon/time 
 lat = data_v10.variables['latitude'][:]  
@@ -50,7 +50,7 @@ files = {
     "t2m": data_t2m
 }
 
-# Create loop of extratropical North to extraxt varibles
+# Create loop of extratropical North to extract variables
 for varname, ds in files.items():
     field = ds.variables[varname][:]    
     extratropics[varname] = field[:, ENH, : ]
@@ -65,7 +65,7 @@ for t in time:
     years.append(t.year)
     months.append(t.month)
 
-# Create emppty mean dictionary 
+# Create empty mean dictionary 
 mean = {}
 
 # Convert monthly data --> winter means (December, January, February)
@@ -84,9 +84,9 @@ n_lon = mean['t2m'].shape[2]
 
 matrix = np.zeros((n_lat * n_lon, n_years * 3))
 
-# Convert 2d spatial gris --> 1d lsit for matrix
-for i in range(n_lat): # loop throughn each lattitude
-    for j in range(n_lon): # loop throughn each longitude
+# Convert 2d spatial grid --> 1d list for matrix
+for i in range(n_lat): # loop through each lattitude
+    for j in range(n_lon): # loop through each longitude
         idx = i * n_lon + j
         t2m_ts = mean['t2m'][:, i, j]
         u10_ts = mean['u10'][:, i, j]
@@ -97,7 +97,7 @@ for i in range(n_lat): # loop throughn each lattitude
 missing_data = ~np.any(np.isnan(matrix), axis = 1)
 clean = matrix[missing_data, :]
 
-# Standardization, since varibles have different units and scales (consistency)
+# Standardisation, since variables have different units and scales (consistency)
 scale = StandardScaler()
 scaled_data = scale.fit_transform(clean)
 print(scaled_data)
@@ -110,7 +110,7 @@ Z = linkage(scaled_data, method='ward')
 plt.figure(figsize=(14, 6))
 dendrogram(Z, truncate_mode='level', p=5)
 plt.title(" Extratropical NH – Hierarchical Clustering Dendrogram (Winter Months)")
-plt.xlabel("Cluster") # Need help... what does one make this
+plt.xlabel("Cluster") 
 plt.ylabel("Distance")
 plt.show()
 
@@ -136,7 +136,7 @@ for k, idx in enumerate(clean_idx):
     cluster_map[i, j] = labels[k]
 
 # Plot Cluster Map
-# Artifical Intellegence assisted on plotting the map
+# Artifical Intelligence assisted on plotting the map
 
 plt.figure(figsize=(12, 6))
 ax = plt.axes(projection=ccrs.PlateCarree())
@@ -186,7 +186,7 @@ centroids = kmeans.cluster_centers_
 print("K-means labels:", kmeans_labels)
 print("Centroid matrix shape:", centroids.shape)
 
-# Extract Varibles from Cluster as mean
+# Extract Variables from Cluster as mean
 # Calculate winter mean
 
 t2m_winter_mean = np.mean(mean['t2m'], axis=0)   
